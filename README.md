@@ -1,5 +1,7 @@
 # DGanttViewer
 
+> WORK IN PROGRESS
+
 Simple Gantt Viewer.
 
 ## Installation
