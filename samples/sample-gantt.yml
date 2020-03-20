@@ -1,0 +1,47 @@
+gantt:
+	project_name: Sample Project - Rock Festival
+	start: 2020-01-01
+	items:
+		- type: section
+			description: Development
+			items:
+				- id: 1
+					description: Develop feature A
+					start: 2018-10-01
+					# end: can use end instead of duration
+					duration: 8d
+					progress: 80
+				- id: 2
+					description: Develop feature B
+					start: after(1) + 2d
+					duration: 2d
+					progress: 0
+				- id: 3
+					description: Develop feature C
+					start: after(2)
+					duration: 3d
+				- id: 4
+					type: milestone
+					description: Review with stakeholders
+					start: after(3)
+		- type: section
+			description: Testing
+			items:
+				- id: 5
+				description: Test feature A
+				start: after(4) + 3d
+				duration: 8d
+				progress: 80
+			- id: 6
+				description: Test feature B
+				start: after(1) + 2d
+				duration: 2d
+				progress: 0
+			- id: 7
+				description: Test feature C
+				start: after(2)
+				duration: 3d
+			- id: 8
+				type: milestone
+				description: Review with stakeholders
+				start: after(3)
