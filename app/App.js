@@ -19,5 +19,10 @@ module.exports = class App {
 
     const filePath = filePaths.pop()
     console.log('filePath', filePath)
+
+    const fileReader = new FileReader(filePath)
+    const ganttData = await fileReader.read()
+
+    console.log('loaded gantt data', ganttData)
   }
 }
