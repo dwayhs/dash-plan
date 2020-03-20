@@ -1,4 +1,5 @@
 const fs = require('fs')
+const yaml = require('js-yaml')
 
 module.exports = class FileReader {
   constructor(filePath) {
@@ -22,10 +23,16 @@ module.exports = class FileReader {
 
   async read () {
     const fileRaw = await this.readRaw()
-    return fileRaw
+    const fileData = this.parseYml(fileRaw)
+    return fileData
   }
 
-  parseYml () {
+  parseYml (fileRaw) {
+    try {
+      return yaml.safeLoad(fileRaw)
+    } catch (err) {
+      alert('An error ocurred reading the file :' + err.message)
+    }
   }
 
   buildModels () {
