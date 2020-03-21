@@ -6,9 +6,12 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <title>DGanttViewer</title>
+    <link rel="stylesheet" type="text/css" href="./style.css">
   </head>
   <body>
     <button id='selectFileButton'>Select file</button>
+
+    <div id='render-target'></div>
 
     <!-- You can also require other files to run in this process -->
     <script src="./renderer.js"></script>
