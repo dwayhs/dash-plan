@@ -134,7 +134,7 @@ class Container extends Item {
       let startDate = super.startDate()
     }
     finally {
-      return startDate || dayjs.min(this.flatItems.map(item => dayjs(item.startDate)))
+      return startDate || dayjs.min(this.flatItems.map(item => dayjs(item.startDate))).toDate()
     }
   }
 
@@ -144,7 +144,7 @@ class Container extends Item {
       let endDate = super.endDate()
     }
     finally {
-      return endDate || dayjs.max(this.flatItems.map(item => dayjs(item.endDate)))
+      return endDate || dayjs.max(this.flatItems.map(item => dayjs(item.endDate))).toDate()
     }
   }
 }
@@ -156,12 +156,22 @@ class Gantt extends Container {
 }
 
 class Section extends Container {
+  get type () {
+    return 'section'
+  }
 }
 
 class Task extends Item {
+  get type () {
+    return 'task'
+  }
 }
 
 class Milestone extends Item {
+  get type () {
+    return 'milestone'
+  }
+
   get endDate () {
     return this.startDate
   }

@@ -1,6 +1,7 @@
 const { dialog } = require('electron').remote
 const FileReader = require('./service/FileReader')
-const Gantt = require('./model/Gantt')
+const { Gantt } = require('./model/Model')
+const Render = require('./render/Render')
 
 module.exports = class App {
   start () {
@@ -25,6 +26,9 @@ module.exports = class App {
     const ganttData = await fileReader.read()
     const gantt = new Gantt(ganttData)
 
-    console.log('loaded gantt data', gantt)
+    const target = document.getElementById('render-target')
+    new Render(gantt, {
+      elementHeight: 20,
+    }).render(target)
   }
 }

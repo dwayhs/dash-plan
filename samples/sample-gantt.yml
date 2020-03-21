@@ -8,8 +8,8 @@ gantt:
         - id: 1
           label: Develop feature A
           start: 2018-10-01
-          # end: can use end instead of duration
-          duration: 8d
+          end: 2018-10-09
+          # duration: 8d
           progress: 80
         - id: 2
           label: Develop feature B
@@ -32,7 +32,7 @@ gantt:
       items:
         - id: 5
           label: Test feature A
-          start: after(4) + 3d
+          start: 2018-11-08
           duration: 8d
           progress: 80
         - id: 6
