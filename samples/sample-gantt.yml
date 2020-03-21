@@ -32,19 +32,19 @@ gantt:
       items:
         - id: 5
           label: Test feature A
-          start: 2018-11-08
+          start: after(4) + 2d
           duration: 8d
           progress: 80
         - id: 6
           label: Test feature B
-          start: after(1) + 2d
+          start: after(5) + 2d
           duration: 2d
           progress: 0
         - id: 7
           label: Test feature C
-          start: after(2)
+          start: after(6)
           duration: 3d
         - id: 8
           type: milestone
           label: Review with stakeholders
-          start: after(3)
+          start: after(7)
