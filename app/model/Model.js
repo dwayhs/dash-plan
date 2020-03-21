@@ -48,12 +48,8 @@ class Item {
   }
 
   get duration () {
-    if (this._attr['duration']) {
-      return this._attr['duration']
-    }
-
     if (this.startDate && this.endDate) {
-      return dayjs(this.endDate).diff(dayjs(this.startDate), 'days') + 'd'
+      return dayjs(this.endDate).diff(dayjs(this.startDate), 'days')
     }
 
     throw Error(`You need to have at least end or duration specified for this item: ${this.label}`)

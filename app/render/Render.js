@@ -1,23 +1,25 @@
 const d3 = require("d3")
 
 module.exports = class Render {
-  constructor (gantt, { elementHeight, svgOptions }) {
+  constructor (gantt, { elementHeight, dayWidth, svgOptions }) {
     this.gantt = gantt
     this.data = this.gantt.flatItems
     
     this.elementHeight = elementHeight
+    this.dayWidth = dayWidth
 
     this.margin = (svgOptions && svgOptions.margin) || {
       top: this.elementHeight * 2,
       left: this.elementHeight * 2
     }
-    this.scaleWidth = ((svgOptions && svgOptions.width) || 600) - (this.margin.left * 2)
-    this.scaleHeight = Math.max((svgOptions && svgOptions.height) || 200, this.data.length * this.elementHeight * 2) - (this.margin.top * 2)
+
+    this.scaleWidth = this.gantt.duration * this.dayWidth
+    this.scaleHeight = Math.max(200, this.data.length * this.elementHeight * 2) - (this.margin.top * 2)
     
     this.svgWidth = this.scaleWidth + (this.margin.left * 2)
     this.svgHeight = this.scaleHeight + (this.margin.top * 2)
 
-    this.fontSize = (svgOptions && svgOptions.fontSize) || 12
+    this.fontSize = (svgOptions && svgOptions.fontSize) || 10
 
     this.createScale()
     this.data = this.prepareData()
@@ -32,6 +34,13 @@ module.exports = class Render {
       const width = xEnd - x
       const height = this.elementHeight
 
+      const singleCharHeight = this.fontSize * 0.45
+
+      const label = {
+        x,
+        y: y + (height / 2) + singleCharHeight
+      }
+
       return {
         type: item.type,
         id: item.id,
@@ -42,7 +51,7 @@ module.exports = class Render {
         dependsOn: item.dependsOn,
         progress: item.progress,
         measures: {
-          x, xEnd, y, width, height
+          x, xEnd, y, width, height, label
         }
       }
     })
@@ -127,6 +136,15 @@ module.exports = class Render {
       .attr('height', item => item.measures.height)
       .style('fill', '#bbe6ef')
       .style('stroke', '#62bdd5')
+
+    bars
+      .append('text')
+      .style('fill', 'black')
+      .style('font-family', 'sans-serif')
+      .attr('x', item => item.measures.label.x + 4)
+      .attr('y', item => item.measures.label.y)
+      .attr('font-size', this.fontSize)
+      .text(item => item.label)
   }
 
   createMilestoneBars () {
@@ -143,5 +161,14 @@ module.exports = class Render {
       .attr('transform', item => `translate(${item.measures.x},${item.measures.y})`)
       .style('fill', '#ffe0b2')
       .style('stroke', '#fba22c')
+
+      bars
+        .append('text')
+        .style('fill', 'black')
+        .style('font-family', 'sans-serif')
+        .attr('x', item => item.measures.label.x + this.elementHeight + 4)
+        .attr('y', item => item.measures.label.y)
+        .attr('font-size', this.fontSize)
+        .text(item => item.label)
   }
 }

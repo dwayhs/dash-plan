@@ -29,6 +29,7 @@ module.exports = class App {
     const target = document.getElementById('render-target')
     new Render(gantt, {
       elementHeight: 20,
+      dayWidth: 28,
     }).render(target)
   }
 }
