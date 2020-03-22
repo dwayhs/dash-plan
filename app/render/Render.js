@@ -29,8 +29,8 @@ module.exports = class Render {
 
   prepareData () {
     return this.data.map((item, index) => {
-      const x = this.xScale(item.startDate)
-      const xEnd = this.xScale(item.endDate)
+      const x = this.xScale(item.startDate) + 4 // TODO: adding 4 to fix scale, find out whyu
+      const xEnd = this.xScale(item.endDate) + 4
       const y = index * this.elementHeight * 1.5
       const width = xEnd - x
       const height = this.elementHeight
@@ -72,8 +72,6 @@ module.exports = class Render {
     this.createSectionBars()
     this.createTaskBars()
     this.createMilestoneBars()
-
-    this.container.append('g').call(this.xAxis)
   }
 
   get scaleStartDate () {
@@ -86,6 +84,10 @@ module.exports = class Render {
 
   get scaleTotalDays () {
     return dayjs(this.scaleEndDate).diff(dayjs(this.scaleStartDate), 'days')
+  }
+
+  get scaleItemWidth () {
+    return this.scaleWidth / this.scaleTotalDays
   }
   
   createScale () {
@@ -103,7 +105,34 @@ module.exports = class Render {
   }
 
   createXAxys () {
-    this.xAxis = d3.axisBottom(this.xScale)
+    this.xAxis = d3
+      .axisBottom(this.xScale)
+      .ticks(this.scaleTotalDays)
+      .tickFormat(d => dayjs(d).format('DD'))
+
+    this.container.append('g')
+      .call(this.xAxis)
+      .call(g => g.select(".domain").remove())
+      .call(g => g.selectAll(".tick line")
+        .attr('y2', this.svgHeight)
+        .attr('stroke', '#cccccc')
+      )
+      .call(g => g.selectAll('.tick text')
+        .attr('x', this.scaleItemWidth / 2)
+      )
+
+    this.xMonthAxis = d3
+      .axisTop(this.xScale)
+      .ticks(d3.timeMonth)
+      .tickFormat(d => dayjs(d).format('MMMM'))
+
+    this.container.append('g')
+      .call(this.xMonthAxis)
+      .call(g => g.selectAll('.tick text')
+        .attr('x', 4)
+        .attr('y', -4)
+        .style("text-anchor", "start")
+      )
   }
 
   createContainer () {
@@ -122,8 +151,8 @@ module.exports = class Render {
 
     bars
       .append('rect')
-      .attr('rx', this.elementHeight / 2)
-      .attr('ry', this.elementHeight / 2)
+      .attr('rx', this.elementHeight / 4)
+      .attr('ry', this.elementHeight / 4)
       .attr('x', item => item.measures.x)
       .attr('y', item => item.measures.y)
       .attr('width', item => item.measures.width)
