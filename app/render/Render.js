@@ -237,6 +237,16 @@ module.exports = class Render {
       .attr('width', item => item.measures.width)
       .attr('height', item => item.measures.height)
       .style('fill', '#aeaeba')
+
+    // task label
+    bars
+      .append('text')
+      .style('fill', 'black')
+      .style('font-family', 'sans-serif')
+      .attr('x', item => item.measures.label.x + 4)
+      .attr('y', item => item.measures.label.y)
+      .attr('font-size', this.fontSize)
+      .text(item => item.label)
   }
 
   createTaskBars () {
