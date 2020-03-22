@@ -247,10 +247,9 @@ module.exports = class Render {
       .enter()
       .append('g')
 
+    // task bar
     bars
       .append('rect')
-      .attr('rx', this.elementHeight / 8)
-      .attr('ry', this.elementHeight / 8)
       .attr('x', item => item.measures.x)
       .attr('y', item => item.measures.y)
       .attr('width', item => item.measures.width)
@@ -258,6 +257,16 @@ module.exports = class Render {
       .style('fill', '#bbe6ef')
       .style('stroke', '#62bdd5')
 
+    // task progress bar
+    bars
+      .append('rect')
+      .attr('x', item => item.measures.x)
+      .attr('y', item => item.measures.y)
+      .attr('width', item => item.measures.width * item.progress / 100)
+      .attr('height', item => item.measures.height)
+      .style('fill', '#62bdd5')
+
+    // task label
     bars
       .append('text')
       .style('fill', 'black')
