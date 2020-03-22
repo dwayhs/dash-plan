@@ -3,14 +3,17 @@
   <head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; script-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self' data:; script-src 'self'">
     <title>DGanttViewer</title>
     <link rel="stylesheet" type="text/css" href="./style.css">
   </head>
   <body>
-    <button id='selectFileButton'>Select file</button>
-
+    <div class='top-menu'>
+      <button id='selectFileButton'>Select file</button>
+      <button id='exportButton'>Export</button>
+    </div>
+    
     <div id='render-target'></div>
 
     <!-- You can also require other files to run in this process -->

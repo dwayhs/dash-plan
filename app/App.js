@@ -2,6 +2,7 @@ const { dialog } = require('electron').remote
 const FileReader = require('./service/FileReader')
 const { Gantt } = require('./model/Model')
 const Render = require('./render/Render')
+const { saveSvgAsPng } = require('save-svg-as-png')
 
 module.exports = class App {
   start () {
@@ -11,6 +12,7 @@ module.exports = class App {
 
   bindEventListeners () {
     document.getElementById('selectFileButton').addEventListener('click', this.selectFileButtonClickHandler)
+    document.getElementById('exportButton').addEventListener('click', this.exportButtonClickHandler)
   }
 
   selectFileButtonClickHandler = async (e) => {
@@ -25,11 +27,18 @@ module.exports = class App {
     const fileReader = new FileReader(filePath)
     const ganttData = await fileReader.read()
     const gantt = new Gantt(ganttData)
+    window.gantt = gantt
 
     const target = document.getElementById('render-target')
     new Render(gantt, {
       elementHeight: 20,
       dayWidth: 22,
     }).render(target)
+  }
+
+  exportButtonClickHandler = (e) => {
+    saveSvgAsPng(document.querySelector('#render-target > svg'), `${window.gantt.label}-gantt.png`, {
+      backgroundColor: '#fff',
+    })
   }
 }
