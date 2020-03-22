@@ -26,7 +26,9 @@ gantt:
           type: milestone
           label: Review with stakeholders
           start: after(3)
-          depends_on: 3
+          depends_on:
+            - 2
+            - 3
     - type: section
       label: Testing
       items:

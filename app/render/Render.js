@@ -66,9 +66,7 @@ module.exports = class Render {
     this.createSvg(target)
     this.createContainer()
     this.createXAxys()
-    
-    // this.linesContainer = this.container.append('g').attr('transform', `translate(0,${this.margin.top})`)
-
+    this.createDependencyLines()
     this.createSectionBars()
     this.createTaskBars()
     this.createMilestoneBars()
@@ -139,6 +137,87 @@ module.exports = class Render {
     this.container = this.svg
       .append('g')
       .attr('transform', `translate(${this.margin.left},${this.margin.top})`)
+  }
+
+  createDependencyLines () {
+    const totalDependenciesPerItem = {}
+
+    const dependencyLines = this.data.map((item, itemIndex) => {
+      const depenedecies = Array.isArray(item.dependsOn) ? item.dependsOn : [item.dependsOn]
+
+      return depenedecies.map(dependsOn => {
+        const dependsOnItem = this.gantt.findItemById(dependsOn)
+        const dependsOnIndex = this.data.findIndex(i => i.id === dependsOn)
+        if(!totalDependenciesPerItem[dependsOn]) {
+          totalDependenciesPerItem[dependsOn] = 1
+        } else {
+          totalDependenciesPerItem[dependsOn] += 1
+        }
+
+        return {
+          item: item.id,
+          dependsOn,
+          itemStartDate: item.startDate,
+          dependsOnEndDate: dependsOnItem.endDate,
+          measures: {
+            start: {
+              x: this.xScale(dependsOnItem.endDate),
+              y: dependsOnIndex * this.elementHeight * 1.5 + this.elementHeight / 2,
+            },
+            end: {
+              x: this.xScale(item.startDate),
+              y: itemIndex * this.elementHeight * 1.5 + this.elementHeight / 2,
+            },
+            dependsOnIndexForItem: totalDependenciesPerItem[dependsOn] - 1
+          }
+        }
+      })
+    }).flat()
+
+    console.log('dependencyLines', dependencyLines)
+
+    const polylineData = dependencyLines.map(data => {
+      const color = data.measures.end.x >= data.measures.start.x ? '#aaaaaa' : '#ff0000'
+      const delta = 10 + 5 * data.measures.dependsOnIndexForItem
+      if (data.measures.end.x > data.measures.start.x) {
+        // simple l shape
+        return {
+          points: [
+            data.measures.start.x, data.measures.start.y,
+            data.measures.start.x + delta, data.measures.start.y,
+            
+            data.measures.start.x + delta, data.measures.end.y,
+            data.measures.end.x, data.measures.end.y
+          ],
+          color
+        }
+      } else {
+        // line with go-back
+        return {
+          points: [
+            data.measures.start.x, data.measures.start.y,
+            data.measures.start.x + delta, data.measures.start.y,
+            
+            data.measures.start.x + delta, (data.measures.start.y + data.measures.end.y) / 2,
+            data.measures.end.x - delta, (data.measures.start.y + data.measures.end.y) / 2,
+  
+            data.measures.end.x - delta, data.measures.end.y,
+            data.measures.end.x, data.measures.end.y
+          ],
+          color
+        }
+      }
+    })
+
+    const linesContainer = this.container.append('g').attr('transform', `translate(0,${this.margin.top})`)
+    linesContainer
+      .selectAll('polyline')
+      .data(polylineData)
+      .enter()
+      .append('polyline')
+      .style('fill', 'none')
+      .style('stroke', d => d.color)
+      .attr('points', d => d.points)
   }
 
   createSectionBars () {
