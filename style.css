@@ -1,5 +1,33 @@
 html, body {
-  width: 1vw;
-  height: 1vh;
+  width: 100vw;
+  height: 100vh;
   background-color: white;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-menu {
+  height: 28px;
+  flex: none;
+  display: flex;
+  flex-direction: row;
+  background-color: #34495e;
+}
+
+.top-menu button {
+  margin: 4px;
+  border: 0;
+  background-color: transparent;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.content {
+  flex-grow: 1;
+  overflow: scroll;
 }

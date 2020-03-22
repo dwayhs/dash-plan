@@ -37,6 +37,10 @@ module.exports = class App {
   }
 
   exportButtonClickHandler = (e) => {
+    if (!window.gantt) {
+      return alert('You need to load a gantt chart yml file before exporting')
+    }
+
     saveSvgAsPng(document.querySelector('#render-target > svg'), `${window.gantt.label}-gantt.png`, {
       backgroundColor: '#fff',
     })
