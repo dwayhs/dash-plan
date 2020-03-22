@@ -1,4 +1,5 @@
 const d3 = require("d3")
+const dayjs = require('dayjs')
 
 module.exports = class Render {
   constructor (gantt, { elementHeight, dayWidth, svgOptions }) {
@@ -13,7 +14,7 @@ module.exports = class Render {
       left: this.elementHeight * 2
     }
 
-    this.scaleWidth = this.gantt.duration * this.dayWidth
+    this.scaleWidth = this.scaleTotalDays * this.dayWidth
     this.scaleHeight = Math.max(200, this.data.length * this.elementHeight * 2) - (this.margin.top * 2)
     
     this.svgWidth = this.scaleWidth + (this.margin.left * 2)
@@ -75,9 +76,21 @@ module.exports = class Render {
     this.container.append('g').call(this.xAxis)
   }
 
+  get scaleStartDate () {
+    return dayjs(this.gantt.startDate).subtract(6, 'days').toDate()
+  }
+
+  get scaleEndDate () {
+    return dayjs(this.gantt.endDate).add(6, 'days').toDate()
+  }
+
+  get scaleTotalDays () {
+    return dayjs(this.scaleEndDate).diff(dayjs(this.scaleStartDate), 'days')
+  }
+  
   createScale () {
     this.xScale = d3.scaleTime()
-      .domain([this.gantt.startDate, this.gantt.endDate])
+      .domain([this.scaleStartDate, this.scaleEndDate])
       .range([0, this.scaleWidth])
   }
 
