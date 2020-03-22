@@ -1,6 +1,6 @@
 {
   "name": "dgantt-viewer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A minimal Gantt Viewer",
   "main": "main.js",
   "scripts": {
@@ -10,8 +10,7 @@
     "dist-win": "electron-builder --win",
     "dist-linux": "electron-builder --linux"
   },
-  "build": {
-  },
+  "build": {},
   "repository": "https://github.com/dwayhs/DGanttViewer",
   "keywords": [
     "gantt",
