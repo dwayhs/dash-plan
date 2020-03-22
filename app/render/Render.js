@@ -30,7 +30,7 @@ module.exports = class Render {
   prepareData () {
     return this.data.map((item, index) => {
       const x = this.xScale(item.startDate) + 4 // TODO: adding 4 to fix scale, find out whyu
-      const xEnd = this.xScale(item.endDate) + 4
+      const xEnd = this.xScale(dayjs(item.endDate).add(1, 'day').toDate()) + 4
       const y = index * this.elementHeight * 1.5
       const width = xEnd - x
       const height = this.elementHeight
@@ -113,7 +113,7 @@ module.exports = class Render {
       .call(g => g.select(".domain").remove())
       .call(g => g.selectAll(".tick line")
         .attr('y2', this.svgHeight)
-        .attr('stroke', '#cccccc')
+        .attr('stroke', '#efefef')
       )
       .call(g => g.selectAll('.tick text')
         .attr('x', this.scaleItemWidth / 2)
@@ -161,11 +161,11 @@ module.exports = class Render {
           dependsOnEndDate: dependsOnItem.endDate,
           measures: {
             start: {
-              x: this.xScale(dependsOnItem.endDate),
+              x: this.xScale(dayjs(dependsOnItem.endDate).add(1, 'day').toDate()) + 4,
               y: dependsOnIndex * this.elementHeight * 1.5 + this.elementHeight / 2,
             },
             end: {
-              x: this.xScale(item.startDate),
+              x: this.xScale(item.startDate) + 4,
               y: itemIndex * this.elementHeight * 1.5 + this.elementHeight / 2,
             },
             dependsOnIndexForItem: totalDependenciesPerItem[dependsOn] - 1
