@@ -140,7 +140,7 @@ module.exports = class Render {
       .call(g => g.selectAll('.tick text')
         .attr('x', this.scaleItemWidth / 2)
       )
-      .call(g => g.selectAll(this.scaleNotBusinessDaysIndex.map(i => `.tick:nth-child(${i})`).join(','))
+      .call(g => g.selectAll(this.scaleNotBusinessDaysIndex.map(i => `.tick:nth-child(${i + 1})`).join(','))
         .append('rect')
         .attr('x', 0)
         .attr('y', 0)
