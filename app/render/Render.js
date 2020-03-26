@@ -63,6 +63,7 @@ module.exports = class Render {
 
     const dataLength = this.data.length
 
+    this.cleanTarget(target)
     this.createSvg(target)
     this.createContainer()
     this.createXAxys()
@@ -92,6 +93,10 @@ module.exports = class Render {
     this.xScale = d3.scaleTime()
       .domain([this.scaleStartDate, this.scaleEndDate])
       .range([0, this.scaleWidth])
+  }
+
+  cleanTarget (target) {
+    target.innerHTML = ''
   }
 
   createSvg (target, svgWidth, svgHeight) {
