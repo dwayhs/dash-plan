@@ -5,31 +5,31 @@ const dayjs = require('dayjs')
 describe('BusinessDays', () => {
   describe('isBusinessDays', () => {
     it('should return `true` if day is monday', () => {
-      assert.isTrue(isBusinessDay(new Date('2020-01-06')))
+      expect(isBusinessDay(new Date('2020-01-06'))).to.be.true
     })
 
     it('should return `true` if day is tuesday', () => {
-      assert.isTrue(isBusinessDay(new Date('2020-01-07')))
+      expect(isBusinessDay(new Date('2020-01-07'))).to.be.true
     })
 
     it('should return `true` if day is wednesday', () => {
-      assert.isTrue(isBusinessDay(new Date('2020-01-08')))
+      expect(isBusinessDay(new Date('2020-01-08'))).to.be.true
     })
 
     it('should return `true` if day is thursday', () => {
-      assert.isTrue(isBusinessDay(new Date('2020-01-09')))
+      expect(isBusinessDay(new Date('2020-01-09'))).to.be.true
     })
 
     it('should return `true` if day is friday', () => {
-      assert.isTrue(isBusinessDay(new Date('2020-01-10')))
+      expect(isBusinessDay(new Date('2020-01-10'))).to.be.true
     })
 
     it('should return `false` if day is saturday', () => {
-      assert.isFalse(isBusinessDay(new Date('2020-01-11')))
+      expect(isBusinessDay(new Date('2020-01-11'))).to.be.false
     })
 
     it('should return `false` if day is sunday', () => {
-      assert.isFalse(isBusinessDay(new Date('2020-01-12')))
+      expect(isBusinessDay(new Date('2020-01-12'))).to.be.false
     })
   })
 
