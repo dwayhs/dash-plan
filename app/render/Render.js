@@ -1,5 +1,6 @@
 const d3 = require("d3")
 const dayjs = require('dayjs')
+const { isBusinessDay } = require('../lib/businessDays')
 
 module.exports = class Render {
   constructor (gantt, { elementHeight, dayWidth, svgOptions }) {
@@ -85,6 +86,22 @@ module.exports = class Render {
     return dayjs(this.scaleEndDate).diff(dayjs(this.scaleStartDate), 'days')
   }
 
+  get scaleNotBusinessDaysIndex () {
+    const indexes = []
+    let currentDate = dayjs(this.scaleStartDate)
+    let currentIndex = 0
+
+    while (currentDate.isBefore(dayjs(this.scaleEndDate))) {
+      if (!isBusinessDay(currentDate)) {
+        indexes.push(currentIndex)
+      }
+      currentDate = currentDate.add(1, 'day')
+      currentIndex++
+    }
+
+    return indexes
+  }
+
   get scaleItemWidth () {
     return this.scaleWidth / this.scaleTotalDays
   }
@@ -122,6 +139,15 @@ module.exports = class Render {
       )
       .call(g => g.selectAll('.tick text')
         .attr('x', this.scaleItemWidth / 2)
+      )
+      .call(g => g.selectAll(this.scaleNotBusinessDaysIndex.map(i => `.tick:nth-child(${i})`).join(','))
+        .append('rect')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', this.dayWidth)
+        .attr('height', this.svgHeight)
+        .style('fill', '#ccc')
+        .style("opacity", 0.2)
       )
 
     this.xMonthAxis = d3

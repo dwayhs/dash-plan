@@ -1,4 +1,5 @@
 const dayjs = require('dayjs')
+const { addBusinessDays } = require('../lib/businessDays')
 const minMax = require('dayjs/plugin/minMax')
 dayjs.extend(minMax)
 
@@ -81,8 +82,9 @@ class Item {
   }
 
   parseDuration (duration) {
-    const [ _, operation, value, unit ] = duration.match(/([+-]?)(\d)([dmy])/)
+    const [ _, operation, value, unit ] = duration.match(/([+-]?)(\d)([dbmy])/)
     const unitTranslation = {
+      b: 'business-days',
       d: 'day',
       m: 'month',
       y: 'year'
@@ -99,6 +101,11 @@ class Item {
     if (!duration) return date
 
     const { operation, value, unit } = this.parseDuration(duration)
+
+    if (unit === 'business-days') {
+      return addBusinessDays(date, operation, value - 1)
+    }
+
     if (operation === '+') {
       return dayjs(date).add(value, unit).toDate()
     } else {
@@ -109,13 +116,13 @@ class Item {
   calculateStartDate () {
     const match = this._attr['start']
       .replace(/ /g,'') // remove all empty spaces
-      .match(/after\((\d)\)([+-]\d[dmy])?/)
+      .match(/after\((.+)\)([+-]\d[dbmy])?/)
 
     if (!match) throw Error(`Invalid date expression: ${this._attr['start']}`)
 
     const [ _, refId, duration ] = match
     const referencedItem = this._gantt.findItemById(refId)
-    return this.applyDuration(referencedItem.endDate, duration)
+    return this.applyDuration(dayjs(referencedItem.endDate).add(1, 'day').toDate(), duration)
   }
 
   findItemById (id) {

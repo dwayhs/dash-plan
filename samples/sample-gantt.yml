@@ -13,14 +13,14 @@ gantt:
           progress: 80
         - id: 2
           label: Develop feature B
-          start: after(1) - 2d
-          duration: 2d
+          start: after(1) - 2b
+          duration: 2b
           progress: 0
           depends_on: 1
         - id: 3
           label: Develop feature C
-          start: after(2)
-          duration: 3d
+          start: after(2) + 0b
+          duration: 3b
           depends_on: 2
         - id: 4
           type: milestone
@@ -34,18 +34,18 @@ gantt:
       items:
         - id: 5
           label: Test feature A
-          start: after(4) + 2d
-          duration: 8d
+          start: after(4) + 2b
+          duration: 8b
           progress: 80
         - id: 6
           label: Test feature B
-          start: after(5) + 2d
-          duration: 2d
+          start: after(5) + 2b
+          duration: 2b
           progress: 0
         - id: 7
           label: Test feature C
           start: after(6)
-          duration: 3d
+          duration: 3b
         - id: 8
           type: milestone
           label: Review with stakeholders
