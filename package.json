@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "test": "mocha --debug-brk --inspect 'test/**/*.js'",
     "pack": "electron-builder --dir",
     "dist-mac": "electron-builder --mac",
     "dist-win": "electron-builder --win",
@@ -21,8 +22,10 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
+    "chai": "^4.2.0",
     "electron": "^8.1.1",
-    "electron-builder": "^22.4.1"
+    "electron-builder": "^22.4.1",
+    "mocha": "^7.1.1"
   },
   "dependencies": {
     "d3": "^5.15.0",

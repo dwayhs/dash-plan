@@ -15,7 +15,7 @@ function addBusinessDays (date, operation, days) {
 
 function isBusinessDay (date)  {
   // TODO: allow customization of business days
-  return [1, 2, 3, 4, 5].includes(dayjs(date).day())
+  return [0, 1, 2, 3, 4].includes(dayjs(date).day())
 }
 
 

@@ -1,10 +1,13 @@
-.PHONY: setup run pack dist
+.PHONY: setup run test pack dist dist-mac dist-win dist-linux
 
 setup:
 	npm install
 
 run:
 	npm start
+
+test:
+	npm run test
 
 pack:
 	npm run pack
