@@ -184,12 +184,13 @@ module.exports = class Render {
     const polylineData = dependencyLines.map(data => {
       const color = data.measures.end.x >= data.measures.start.x ? '#aaaaaa' : '#ff0000'
       const delta = 10 + 5 * data.measures.dependsOnIndexForItem
+      const verticalDelta = 3 * data.measures.dependsOnIndexForItem
       if (data.measures.end.x > data.measures.start.x) {
         // simple l shape
         return {
           points: [
-            data.measures.start.x, data.measures.start.y,
-            data.measures.start.x + delta, data.measures.start.y,
+            data.measures.start.x, data.measures.start.y + verticalDelta,
+            data.measures.start.x + delta, data.measures.start.y + verticalDelta,
             
             data.measures.start.x + delta, data.measures.end.y,
             data.measures.end.x, data.measures.end.y
@@ -200,8 +201,8 @@ module.exports = class Render {
         // line with go-back
         return {
           points: [
-            data.measures.start.x, data.measures.start.y,
-            data.measures.start.x + delta, data.measures.start.y,
+            data.measures.start.x, data.measures.start.y + verticalDelta,
+            data.measures.start.x + delta, data.measures.start.y + verticalDelta,
             
             data.measures.start.x + delta, (data.measures.start.y + data.measures.end.y) / 2,
             data.measures.end.x - delta, (data.measures.start.y + data.measures.end.y) / 2,
