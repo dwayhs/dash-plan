@@ -42,7 +42,7 @@ class Item {
     }
 
     if (this._attr['duration']) {
-      return this.applyDuration(this.startDate, this._attr['duration'])
+      return this.applyDuration(dayjs(this.startDate).subtract(1, 'day'), this._attr['duration'])
     }
 
     throw Error(`You need to have at least end or duration specified for this item: ${this.label}`)
@@ -103,7 +103,7 @@ class Item {
     const { operation, value, unit } = this.parseDuration(duration)
 
     if (unit === 'business-days') {
-      return addBusinessDays(date, operation, value - 1)
+      return addBusinessDays(date, operation, value)
     }
 
     if (operation === '+') {
