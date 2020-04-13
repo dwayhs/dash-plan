@@ -82,7 +82,7 @@ class Item {
   }
 
   parseDuration (duration) {
-    const [ _, operation, value, unit ] = duration.match(/([+-]?)(\d)([dbmy])/)
+    const [ _, operation, value, unit ] = duration.match(/([+-]?)(\d+)([dbmy])/)
     const unitTranslation = {
       b: 'business-days',
       d: 'day',
@@ -116,7 +116,7 @@ class Item {
   calculateStartDate () {
     const match = this._attr['start']
       .replace(/ /g,'') // remove all empty spaces
-      .match(/after\((.+)\)([+-]\d[dbmy])?/)
+      .match(/after\((.+)\)([+-]\d+[dbmy])?/)
 
     if (!match) throw Error(`Invalid date expression: ${this._attr['start']}`)
 
