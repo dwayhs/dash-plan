@@ -8,22 +8,27 @@ module.exports = class App {
   start () {
     console.log('App starting')
     this.bindEventListeners()
+
+    this.openedFilePath = null
   }
 
   bindEventListeners () {
-    document.getElementById('selectFileButton').addEventListener('click', this.selectFileButtonClickHandler)
+    document.getElementById('openFileButton').addEventListener('click', this.openFileButtonClickHandler)
     document.getElementById('exportButton').addEventListener('click', this.exportButtonClickHandler)
   }
 
-  async selectFileButtonClickHandler (e) {
+  openFileButtonClickHandler = async (e) => {
     const file = await dialog.showOpenDialog({ properties: ['openFile'] })
     const { filePaths } = file
 
     if (!filePaths.length) return
 
-    const filePath = filePaths.pop()
-    console.log('filePath', filePath)
+    this.openedFilePath = filePaths.pop()
 
+    await this.readFileAndRender(this.openedFilePath)
+  }
+
+  readFileAndRender = async (filePath) => {
     const fileReader = new FileReader(filePath)
     const ganttData = await fileReader.read()
     const gantt = new Gantt(ganttData)
