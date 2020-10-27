@@ -1,4 +1,5 @@
 const dayjs = require('dayjs')
+process.env.TZ = 'Etc/UTC' 
 
 function addBusinessDays (date, operation, days) {
   let daysToApply = days
@@ -15,7 +16,7 @@ function addBusinessDays (date, operation, days) {
 
 function isBusinessDay (date)  {
   // TODO: allow customization of business days
-  return [0, 1, 2, 3, 4].includes(dayjs(date).day())
+  return [1, 2, 3, 4, 5].includes(dayjs(date).locale('en').day())
 }
 
 
