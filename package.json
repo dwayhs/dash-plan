@@ -1,5 +1,5 @@
 {
-  "name": "dgantt-viewer",
+  "name": "dash-plan",
   "version": "0.0.4",
   "description": "A minimal Gantt Viewer",
   "main": "main.js",
@@ -12,7 +12,7 @@
     "dist-linux": "electron-builder --linux"
   },
   "build": {},
-  "repository": "https://github.com/dwayhs/DGanttViewer",
+  "repository": "https://github.com/dwayhs/dash-plan",
   "keywords": [
     "gantt",
     "viewer",

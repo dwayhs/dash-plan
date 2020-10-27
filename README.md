@@ -1,8 +1,8 @@
-# DGanttViewer
+# Dash Plan
 
 > WORK IN PROGRESS
 
-Simple Gantt Viewer.
+A minimal Gantt Viewer.
 
 ## Installation
 
