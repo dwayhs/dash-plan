@@ -2,7 +2,7 @@ const fs = require('fs')
 const yaml = require('js-yaml')
 
 module.exports = class FileReader {
-  constructor(filePath) {
+  constructor (filePath) {
     this.filePath = filePath
   }
 
@@ -11,11 +11,11 @@ module.exports = class FileReader {
 
     return new Promise((resolve, reject) => {
       fs.readFile(this.filePath, 'utf-8', (err, data) => {
-        if(err){
-            alert('An error ocurred reading the file :' + err.message)
-            return reject(err)
+        if (err) {
+          alert('An error ocurred reading the file :' + err.message)
+          return reject(err)
         }
-  
+
         resolve(data)
       })
     })

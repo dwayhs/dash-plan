@@ -1,4 +1,4 @@
-const d3 = require("d3")
+const d3 = require('d3')
 const dayjs = require('dayjs')
 const { isBusinessDay } = require('../lib/businessDays')
 
@@ -6,7 +6,7 @@ module.exports = class Render {
   constructor (gantt, { elementHeight, dayWidth, svgOptions }) {
     this.gantt = gantt
     this.data = this.gantt.flatItems
-    
+
     this.elementHeight = elementHeight
     this.dayWidth = dayWidth
 
@@ -17,7 +17,7 @@ module.exports = class Render {
 
     this.scaleWidth = this.scaleTotalDays * this.dayWidth
     this.scaleHeight = Math.max(200, this.data.length * this.elementHeight * 2) - (this.margin.top * 2)
-    
+
     this.svgWidth = this.scaleWidth + (this.margin.left * 2)
     this.svgHeight = this.scaleHeight + (this.margin.top * 2)
 
@@ -62,8 +62,6 @@ module.exports = class Render {
   render (target) {
     console.log('rendering gantt', this.gantt)
 
-    const dataLength = this.data.length
-
     this.cleanTarget(target)
     this.createSvg(target)
     this.createContainer()
@@ -105,7 +103,7 @@ module.exports = class Render {
   get scaleItemWidth () {
     return this.scaleWidth / this.scaleTotalDays
   }
-  
+
   createScale () {
     this.xScale = d3.scaleTime()
       .domain([this.scaleStartDate, this.scaleEndDate])
@@ -132,8 +130,8 @@ module.exports = class Render {
 
     this.container.append('g')
       .call(this.xAxis)
-      .call(g => g.select(".domain").remove())
-      .call(g => g.selectAll(".tick line")
+      .call(g => g.select('.domain').remove())
+      .call(g => g.selectAll('.tick line')
         .attr('y2', this.svgHeight)
         .attr('stroke', '#efefef')
       )
@@ -147,7 +145,7 @@ module.exports = class Render {
         .attr('width', this.dayWidth)
         .attr('height', this.svgHeight)
         .style('fill', '#ccc')
-        .style("opacity", 0.2)
+        .style('opacity', 0.2)
       )
 
     this.xMonthAxis = d3
@@ -160,7 +158,7 @@ module.exports = class Render {
       .call(g => g.selectAll('.tick text')
         .attr('x', 4)
         .attr('y', -4)
-        .style("text-anchor", "start")
+        .style('text-anchor', 'start')
       )
   }
 
@@ -179,7 +177,7 @@ module.exports = class Render {
       return depenedecies.map(dependsOn => {
         const dependsOnItem = this.gantt.findItemById(dependsOn)
         const dependsOnIndex = this.data.findIndex(i => i.id === dependsOn)
-        if(!totalDependenciesPerItem[dependsOn]) {
+        if (!totalDependenciesPerItem[dependsOn]) {
           totalDependenciesPerItem[dependsOn] = 1
         } else {
           totalDependenciesPerItem[dependsOn] += 1
@@ -193,11 +191,11 @@ module.exports = class Render {
           measures: {
             start: {
               x: this.xScale(dayjs(dependsOnItem.endDate).add(1, 'day').toDate()) + 4,
-              y: dependsOnIndex * this.elementHeight * 1.5 + this.elementHeight / 2,
+              y: dependsOnIndex * this.elementHeight * 1.5 + this.elementHeight / 2
             },
             end: {
               x: this.xScale(item.startDate) + 4,
-              y: itemIndex * this.elementHeight * 1.5 + this.elementHeight / 2,
+              y: itemIndex * this.elementHeight * 1.5 + this.elementHeight / 2
             },
             dependsOnIndexForItem: totalDependenciesPerItem[dependsOn] - 1
           }
@@ -217,7 +215,7 @@ module.exports = class Render {
           points: [
             data.measures.start.x, data.measures.start.y + verticalDelta,
             data.measures.start.x + delta, data.measures.start.y + verticalDelta,
-            
+
             data.measures.start.x + delta, data.measures.end.y,
             data.measures.end.x, data.measures.end.y
           ],
@@ -229,10 +227,10 @@ module.exports = class Render {
           points: [
             data.measures.start.x, data.measures.start.y + verticalDelta,
             data.measures.start.x + delta, data.measures.start.y + verticalDelta,
-            
+
             data.measures.start.x + delta, (data.measures.start.y + data.measures.end.y) / 2,
             data.measures.end.x - delta, (data.measures.start.y + data.measures.end.y) / 2,
-  
+
             data.measures.end.x - delta, data.measures.end.y,
             data.measures.end.x, data.measures.end.y
           ],
@@ -329,18 +327,18 @@ module.exports = class Render {
 
     bars
       .append('path')
-      .attr('d', `M 0 ${this.elementHeight/2} L ${this.elementHeight/2} ${this.elementHeight} ${this.elementHeight} ${this.elementHeight/2} ${this.elementHeight/2} 0 Z`)
+      .attr('d', `M 0 ${this.elementHeight / 2} L ${this.elementHeight / 2} ${this.elementHeight} ${this.elementHeight} ${this.elementHeight / 2} ${this.elementHeight / 2} 0 Z`)
       .attr('transform', item => `translate(${item.measures.x},${item.measures.y})`)
       .style('fill', '#ffe0b2')
       .style('stroke', '#fba22c')
 
-      bars
-        .append('text')
-        .style('fill', 'black')
-        .style('font-family', 'sans-serif')
-        .attr('x', item => item.measures.label.x + this.elementHeight + 4)
-        .attr('y', item => item.measures.label.y)
-        .attr('font-size', this.fontSize)
-        .text(item => item.label)
+    bars
+      .append('text')
+      .style('fill', 'black')
+      .style('font-family', 'sans-serif')
+      .attr('x', item => item.measures.label.x + this.elementHeight + 4)
+      .attr('y', item => item.measures.label.y)
+      .attr('font-size', this.fontSize)
+      .text(item => item.label)
   }
 }

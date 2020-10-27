@@ -8,9 +8,9 @@ class Item {
     const type = attributes.type || 'task'
 
     const classes = {
-      'task': Task,
-      'section': Section,
-      'milestone': Milestone
+      task: Task,
+      section: Section,
+      milestone: Milestone
     }
 
     return new classes[type](attributes, gantt)
@@ -22,27 +22,31 @@ class Item {
   }
 
   get id () {
-    return this._attr['id']
+    return this._attr.id
   }
 
   get label () {
-    return this._attr['label'] || 'missing label' 
+    return this._attr.label || 'missing label'
   }
 
   get startDate () {
-    const startDate = dayjs(this._attr['start'])
+    if (!this._attr.start) {
+      throw Error(`You need to have a start date defined for this item: ${this.label}`)
+    }
+
+    const startDate = dayjs(this._attr.start)
     if (startDate.isValid()) return startDate.toDate()
 
     return this.calculateStartDate()
   }
 
   get endDate () {
-    if (this._attr['end']) {
-      return dayjs(this._attr['end']).toDate()
+    if (this._attr.end) {
+      return dayjs(this._attr.end).toDate()
     }
 
-    if (this._attr['duration']) {
-      return this.applyDuration(dayjs(this.startDate).subtract(1, 'day'), this._attr['duration'])
+    if (this._attr.duration) {
+      return this.applyDuration(dayjs(this.startDate).subtract(1, 'day'), this._attr.duration)
     }
 
     throw Error(`You need to have at least end or duration specified for this item: ${this.label}`)
@@ -57,23 +61,23 @@ class Item {
   }
 
   get dependsOn () {
-    return this._attr['depends_on'] || []
+    return this._attr.depends_on || []
   }
 
   get progress () {
-     return this._attr['progress'] || 0
+    return this._attr.progress || 0
   }
 
   get items () {
-    if (!this._attr['items']) return []
+    if (!this._attr.items) return []
 
-    return this._attr['items'].map(itemData => Item.build(itemData, this._gantt))
+    return this._attr.items.map(itemData => Item.build(itemData, this._gantt))
   }
 
   get flat () {
     return [
       this,
-      this.flatItems,
+      this.flatItems
     ].flat()
   }
 
@@ -82,7 +86,7 @@ class Item {
   }
 
   parseDuration (duration) {
-    const [ _, operation, value, unit ] = duration.match(/([+-]?)(\d+)([dbmy])/)
+    const [, operation, value, unit] = duration.match(/([+-]?)(\d+)([dbmy])/)
     const unitTranslation = {
       b: 'business-days',
       d: 'day',
@@ -114,13 +118,13 @@ class Item {
   }
 
   calculateStartDate () {
-    const match = this._attr['start']
-      .replace(/ /g,'') // remove all empty spaces
+    const match = this._attr.start
+      .replace(/ /g, '') // remove all empty spaces
       .match(/after\((.+)\)([+-]\d+[dbmy])?/)
 
-    if (!match) throw Error(`Invalid date expression: ${this._attr['start']}`)
+    if (!match) throw Error(`Invalid date expression: ${this._attr.start}`)
 
-    const [ _, refId, duration ] = match
+    const [, refId, duration] = match
     const referencedItem = this._gantt.findItemById(refId)
     return this.applyDuration(dayjs(referencedItem.endDate).add(1, 'day').toDate(), duration)
   }
@@ -134,27 +138,29 @@ class Container extends Item {
   get startDate () {
     let startDate
     try {
-      let startDate = super.startDate()
+      startDate = super.startDate
+    } catch {
+      startDate = startDate || dayjs.min(this.flatItems.map(item => dayjs(item.startDate))).toDate()
     }
-    finally {
-      return startDate || dayjs.min(this.flatItems.map(item => dayjs(item.startDate))).toDate()
-    }
+
+    return startDate
   }
 
   get endDate () {
     let endDate
     try {
-      let endDate = super.endDate()
+      endDate = super.endDate
+    } catch (error) {
+      endDate = endDate || dayjs.max(this.flatItems.map(item => dayjs(item.endDate))).toDate()
     }
-    finally {
-      return endDate || dayjs.max(this.flatItems.map(item => dayjs(item.endDate))).toDate()
-    }
+
+    return endDate
   }
 }
 
 class Gantt extends Container {
   constructor (attributes) {
-    super(attributes['gantt'])
+    super(attributes.gantt)
   }
 }
 
@@ -183,6 +189,5 @@ class Milestone extends Item {
     return '0d'
   }
 }
-
 
 module.exports = { Gantt, Section, Task, Milestone }

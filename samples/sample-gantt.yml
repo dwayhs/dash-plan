@@ -1,6 +1,5 @@
 gantt:
   label: Sample Project
-  start: 2020-01-01
   items:
     - type: section
       label: Development

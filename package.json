@@ -6,6 +6,8 @@
   "scripts": {
     "start": "electron .",
     "test": "mocha --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml",
+    "lint": "eslint app/**/*.js",
+    "lint-ci": "eslint --format junit --output-file ./reports/eslint/eslint.xml app/**/*.js",
     "make": "electron-forge make"
   },
   "build": {},
@@ -51,6 +53,12 @@
     "@electron-forge/maker-zip": "^6.0.0-beta.54",
     "chai": "^4.2.0",
     "electron": "^10.1.5",
+    "eslint": "^7.12.1",
+    "eslint-config-standard": "^15.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.2",
     "mocha": "^8.2.0",
     "mocha-junit-reporter": "^2.0.0"
   },

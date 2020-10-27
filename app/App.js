@@ -15,7 +15,7 @@ module.exports = class App {
     document.getElementById('exportButton').addEventListener('click', this.exportButtonClickHandler)
   }
 
-  selectFileButtonClickHandler = async (e) => {
+  async selectFileButtonClickHandler (e) {
     const file = await dialog.showOpenDialog({ properties: ['openFile'] })
     const { filePaths } = file
 
@@ -32,17 +32,17 @@ module.exports = class App {
     const target = document.getElementById('render-target')
     new Render(gantt, {
       elementHeight: 20,
-      dayWidth: 22,
+      dayWidth: 22
     }).render(target)
   }
 
-  exportButtonClickHandler = (e) => {
+  async exportButtonClickHandler (e) {
     if (!window.gantt) {
       return alert('You need to load a gantt chart yml file before exporting')
     }
 
     saveSvgAsPng(document.querySelector('#render-target > svg'), `${window.gantt.label}-gantt.png`, {
-      backgroundColor: '#fff',
+      backgroundColor: '#fff'
     })
   }
 }
