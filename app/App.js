@@ -15,7 +15,7 @@ module.exports = class App {
     document.getElementById('exportButton').addEventListener('click', this.exportButtonClickHandler)
   }
 
-  selectFileButtonClickHandler = async (e) => {
+  async selectFileButtonClickHandler (e) {
     const file = await dialog.showOpenDialog({ properties: ['openFile'] })
     const { filePaths } = file
 
@@ -36,7 +36,7 @@ module.exports = class App {
     }).render(target)
   }
 
-  exportButtonClickHandler = (e) => {
+  async exportButtonClickHandler (e) {
     if (!window.gantt) {
       return alert('You need to load a gantt chart yml file before exporting')
     }
