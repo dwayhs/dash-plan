@@ -6,8 +6,8 @@
   "scripts": {
     "start": "electron .",
     "test": "mocha --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml",
-    "lint": "eslint **/*.js",
-    "lint-ci": "eslint --format junit --output-file ./reports/eslint/eslint.xml **/*.js",
+    "lint": "eslint app/**/*.js",
+    "lint-ci": "eslint --format junit --output-file ./reports/eslint/eslint.xml app/**/*.js",
     "make": "electron-forge make"
   },
   "build": {},
