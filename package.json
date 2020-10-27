@@ -5,11 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "mocha --debug-brk --inspect 'test/**/*.js'",
-    "pack": "electron-builder --dir",
-    "dist-mac": "electron-builder --mac",
-    "dist-win": "electron-builder --win",
-    "dist-linux": "electron-builder --linux"
+    "test": "mocha --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml",
+    "make": "electron-forge make"
   },
   "build": {},
   "repository": "https://github.com/dwayhs/dash-plan",
@@ -21,11 +18,41 @@
   ],
   "author": "GitHub",
   "license": "CC0-1.0",
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "linux"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-dmg",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-wix",
+          "config": {}
+        }
+      ]
+    }
+  },
   "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.54",
+    "@electron-forge/maker-deb": "^6.0.0-beta.54",
+    "@electron-forge/maker-dmg": "^6.0.0-beta.54",
+    "@electron-forge/maker-wix": "^6.0.0-beta.54",
+    "@electron-forge/maker-zip": "^6.0.0-beta.54",
     "chai": "^4.2.0",
     "electron": "^8.1.1",
-    "electron-builder": "^22.4.1",
-    "mocha": "^7.1.1"
+    "mocha": "^7.1.1",
+    "mocha-junit-reporter": "^2.0.0"
   },
   "dependencies": {
     "d3": "^5.15.0",
