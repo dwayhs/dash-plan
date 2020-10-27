@@ -1,5 +1,8 @@
 # Dash Plan
 
+
+[![<dash-plan>](https://circleci.com/gh/dwayhs/dash-plan/tree/master.svg.svg?style=svg)](https://app.circleci.com/pipelines/github/dwayhs/dash-plan?branch=master)
+
 > WORK IN PROGRESS
 
 A minimal Gantt Viewer.
