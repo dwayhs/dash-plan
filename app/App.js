@@ -32,7 +32,7 @@ module.exports = class App {
     const target = document.getElementById('render-target')
     new Render(gantt, {
       elementHeight: 20,
-      dayWidth: 22,
+      dayWidth: 22
     }).render(target)
   }
 
@@ -42,7 +42,7 @@ module.exports = class App {
     }
 
     saveSvgAsPng(document.querySelector('#render-target > svg'), `${window.gantt.label}-gantt.png`, {
-      backgroundColor: '#fff',
+      backgroundColor: '#fff'
     })
   }
 }
