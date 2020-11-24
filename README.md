@@ -1,4 +1,4 @@
-# Dash Plan
+![Dash Plan](docs/dash-plan.svg)
 
 A minimal Gantt Viewer based on simple gantt definitions on yaml files.
 
