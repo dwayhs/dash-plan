@@ -67,6 +67,7 @@
     "dayjs": "^1.9.4",
     "debounce": "^1.2.0",
     "js-yaml": "^3.14.0",
-    "save-svg-as-png": "^1.4.17"
+    "save-svg-as-png": "^1.4.17",
+    "scrollbooster": "^3.0.2"
   }
 }

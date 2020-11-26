@@ -4,6 +4,7 @@ const FileReader = require('./service/FileReader')
 const { Gantt } = require('./model/Model')
 const Render = require('./render/Render')
 const { saveSvgAsPng } = require('save-svg-as-png')
+const ScrollBooster = require('scrollbooster')
 
 module.exports = class App {
   start () {
@@ -16,6 +17,7 @@ module.exports = class App {
     }
 
     this.bindEventListeners()
+    this.startDragScroll()
 
     this.openedFilePath = null
   }
@@ -25,6 +27,18 @@ module.exports = class App {
     this.buttons.emptyStateOpenFile.addEventListener('click', this.openFileButtonClickHandler)
   
     this.buttons.export.addEventListener('click', this.exportButtonClickHandler)
+  }
+
+  startDragScroll () {
+    const viewport = document.getElementById('content')
+    const content = document.getElementById('render-target')
+    
+    new ScrollBooster({
+      viewport,
+      content,
+      scrollMode: 'native',
+      emulateScroll: true
+    })
   }
 
   openFileButtonClickHandler = async (e) => {
