@@ -6,6 +6,16 @@ module.exports = class FileReader {
     this.filePath = filePath
   }
 
+  watch (callback) {
+    this.fsWatcher = fs.watch(this.filePath, callback)
+  }
+
+  close () {
+    if (this.fsWatcher) {
+      this.fsWatcher.close()
+    }
+  }
+
   readRaw () {
     console.log('reading', this.filePath)
 

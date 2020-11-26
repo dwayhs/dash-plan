@@ -1,3 +1,4 @@
+const debounce = require('debounce');
 const { dialog } = require('electron').remote
 const FileReader = require('./service/FileReader')
 const { Gantt } = require('./model/Model')
@@ -23,14 +24,22 @@ module.exports = class App {
 
     if (!filePaths.length) return
 
-    this.openedFilePath = filePaths.pop()
+    let filePath = filePaths.pop()
 
-    await this.readFileAndRender(this.openedFilePath)
+    await this.openFile(filePath)
   }
 
-  readFileAndRender = async (filePath) => {
-    const fileReader = new FileReader(filePath)
-    const ganttData = await fileReader.read()
+  openFile = async (filePath) => {
+    if (this.openedFileReader) { this.openedFileReader.close() }
+    this.openedFileReader = new FileReader(filePath)
+
+    await this.readFileAndRender()
+
+    this.openedFileReader.watch(debounce(this.readFileAndRender, 200))
+  }
+
+  readFileAndRender = async () => {
+    const ganttData = await this.openedFileReader.read()
     const gantt = new Gantt(ganttData)
     window.gantt = gantt
 

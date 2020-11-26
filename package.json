@@ -65,6 +65,7 @@
   "dependencies": {
     "d3": "^6.2.0",
     "dayjs": "^1.9.4",
+    "debounce": "^1.2.0",
     "js-yaml": "^3.14.0",
     "save-svg-as-png": "^1.4.17"
   }
