@@ -13,21 +13,65 @@ body {
 
 .top-menu {
   height: 28px;
+  opacity: 0.8;
   flex: none;
   display: flex;
   flex-direction: row;
-  background-color: #34495e;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
 }
 
 .top-menu button {
   margin: 4px;
   border: 0;
   background-color: transparent;
-  color: #fff;
+  color: #333;
   text-transform: uppercase;
+  padding-left: 30px;
+  background-repeat: no-repeat;
+  background-position: left center;
+}
+
+.top-menu button:disabled {
+  opacity: 0.3;
+}
+
+.top-menu button#openFileButton, #emptyStateOpenFileButton {
+  background-image: url(images/open.svg);
+}
+
+.top-menu button#exportButton {
+  background-image: url(images/export.svg);
 }
 
 .content {
   flex-grow: 1;
   overflow: scroll;
+}
+
+#render-target {
+  min-height: 100%;
+}
+
+#empty-state {
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#empty-state img {
+  margin-bottom: 30px;
+}
+
+#empty-state button {
+  border: 0;
+  background-color: #eee;
+  color: #333;
+  text-transform: uppercase;
+  padding: 14px 18px 14px 48px;
+  background-repeat: no-repeat;
+  background-position: 14px center;
+  border-radius: 20px;
 }
