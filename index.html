@@ -11,11 +11,18 @@
   <body>
     <div class='top-menu'>
       <button id='openFileButton'>Open file</button>
-      <button id='exportButton'>Export</button>
+      <button id='exportButton' disabled>Export</button>
     </div>
 
     <div class='content'>
-      <div id='render-target'></div>
+      <div id='render-target'>
+
+        <div id='empty-state'>
+          <image src="images/dash-plan.svg" />
+          <button id='emptyStateOpenFileButton'>Open file</button>
+        </div>
+
+      </div>
     </div>
 
     <!-- You can also require other files to run in this process -->

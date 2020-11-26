@@ -1,4 +1,4 @@
-const debounce = require('debounce');
+const debounce = require('debounce')
 const { dialog } = require('electron').remote
 const FileReader = require('./service/FileReader')
 const { Gantt } = require('./model/Model')
@@ -8,14 +8,23 @@ const { saveSvgAsPng } = require('save-svg-as-png')
 module.exports = class App {
   start () {
     console.log('App starting')
+
+    this.buttons = {
+      openFile: document.getElementById('openFileButton'),
+      export: document.getElementById('exportButton'),
+      emptyStateOpenFile: document.getElementById('emptyStateOpenFileButton'),
+    }
+
     this.bindEventListeners()
 
     this.openedFilePath = null
   }
 
   bindEventListeners () {
-    document.getElementById('openFileButton').addEventListener('click', this.openFileButtonClickHandler)
-    document.getElementById('exportButton').addEventListener('click', this.exportButtonClickHandler)
+    this.buttons.openFile.addEventListener('click', this.openFileButtonClickHandler)
+    this.buttons.emptyStateOpenFile.addEventListener('click', this.openFileButtonClickHandler)
+  
+    this.buttons.export.addEventListener('click', this.exportButtonClickHandler)
   }
 
   openFileButtonClickHandler = async (e) => {
@@ -27,6 +36,7 @@ module.exports = class App {
     let filePath = filePaths.pop()
 
     await this.openFile(filePath)
+    this.enableExportButton()
   }
 
   openFile = async (filePath) => {
@@ -38,24 +48,27 @@ module.exports = class App {
     this.openedFileReader.watch(debounce(this.readFileAndRender, 200))
   }
 
+  enableExportButton () {
+    this.buttons.export.disabled = false
+  }
+
   readFileAndRender = async () => {
     const ganttData = await this.openedFileReader.read()
-    const gantt = new Gantt(ganttData)
-    window.gantt = gantt
+    this.gantt = new Gantt(ganttData)
 
     const target = document.getElementById('render-target')
-    new Render(gantt, {
+    new Render(this.gantt, {
       elementHeight: 20,
       dayWidth: 22
     }).render(target)
   }
 
-  async exportButtonClickHandler (e) {
-    if (!window.gantt) {
+  exportButtonClickHandler = async (e) => {
+    if (!this.gantt) {
       return alert('You need to load a gantt chart yml file before exporting')
     }
 
-    saveSvgAsPng(document.querySelector('#render-target > svg'), `${window.gantt.label}-gantt.png`, {
+    saveSvgAsPng(document.querySelector('#render-target > svg'), `${this.gantt.label}-gantt.png`, {
       backgroundColor: '#fff'
     })
   }
