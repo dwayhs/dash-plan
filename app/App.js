@@ -1,3 +1,4 @@
+const debounce = require('debounce');
 const { dialog } = require('electron').remote
 const FileReader = require('./service/FileReader')
 const { Gantt } = require('./model/Model')
@@ -8,24 +9,37 @@ module.exports = class App {
   start () {
     console.log('App starting')
     this.bindEventListeners()
+
+    this.openedFilePath = null
   }
 
   bindEventListeners () {
-    document.getElementById('selectFileButton').addEventListener('click', this.selectFileButtonClickHandler)
+    document.getElementById('openFileButton').addEventListener('click', this.openFileButtonClickHandler)
     document.getElementById('exportButton').addEventListener('click', this.exportButtonClickHandler)
   }
 
-  async selectFileButtonClickHandler (e) {
+  openFileButtonClickHandler = async (e) => {
     const file = await dialog.showOpenDialog({ properties: ['openFile'] })
     const { filePaths } = file
 
     if (!filePaths.length) return
 
-    const filePath = filePaths.pop()
-    console.log('filePath', filePath)
+    let filePath = filePaths.pop()
 
-    const fileReader = new FileReader(filePath)
-    const ganttData = await fileReader.read()
+    await this.openFile(filePath)
+  }
+
+  openFile = async (filePath) => {
+    if (this.openedFileReader) { this.openedFileReader.close() }
+    this.openedFileReader = new FileReader(filePath)
+
+    await this.readFileAndRender()
+
+    this.openedFileReader.watch(debounce(this.readFileAndRender, 200))
+  }
+
+  readFileAndRender = async () => {
+    const ganttData = await this.openedFileReader.read()
     const gantt = new Gantt(ganttData)
     window.gantt = gantt
 
