@@ -52,7 +52,7 @@
     "@electron-forge/maker-wix": "^6.0.0-beta.54",
     "@electron-forge/maker-zip": "^6.0.0-beta.54",
     "chai": "^4.2.0",
-    "electron": "^10.1.5",
+    "electron": "^15.5.5",
     "eslint": "^7.12.1",
     "eslint-config-standard": "^15.0.0",
     "eslint-plugin-import": "^2.22.1",
