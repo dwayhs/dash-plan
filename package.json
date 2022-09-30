@@ -63,7 +63,7 @@
     "mocha-junit-reporter": "^2.0.0"
   },
   "dependencies": {
-    "d3": "^6.2.0",
+    "d3": "^7.6.1",
     "dayjs": "^1.9.4",
     "debounce": "^1.2.0",
     "js-yaml": "^3.14.0",
